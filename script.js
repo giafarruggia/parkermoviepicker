@@ -50,7 +50,7 @@ async function loadMoviesFromCSV() {
 
     const data = parsed.data.map(row => ({
         title: row.title?.trim() || "",
-        year: Number(row.year)
+        year: Number(row.year),
         medium: row.medium || "",
         length: Number(row.length) || 0,
         vibes: (row.vibes || "")
