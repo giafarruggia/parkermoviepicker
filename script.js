@@ -57,6 +57,15 @@ async function loadMovies() {
         movies = await loadMoviesFromCSV();
     }
 
+    const maxRuntime = Math.max(...movies.map(m => Number(m.length) || 0));
+    const roundedMax = Math.ceil(maxRuntime / 10) * 10;
+
+    const lengthSlider = document.getElementById("length");
+    lengthSlider.max = roundedMax;
+
+    lengthSlider.value = Math.floor(roundedMax * 0.5);
+    document.getElementById("runtimeDisplay").textContent = lengthSlider.value;
+
     populateMediums();
     populateDecades();
     populateVibes();
