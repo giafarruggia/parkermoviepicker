@@ -214,7 +214,6 @@ button {
 
 
 .footer-links {
-    display: inline-block;
     margin-top: 10px;
     font-size: 0.9rem;
     color: #707070;
@@ -227,4 +226,17 @@ button {
 
 .footer-links .divider {
     color: #777;
+}
+
+.footer-links a:link,
+.footer-links a:visited {
+    color: #707070;
+}
+
+.footer-links a:hover {
+    color: #8a8a8a;
+}
+
+.footer-links a:active {
+    color: #707070;
 }
