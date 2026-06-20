@@ -22,6 +22,32 @@ function setWatchedCooldown(data) {
     localStorage.setItem(WATCHED_KEY, JSON.stringify(data));
 }
 
+function renderCooldownList() {
+    const container = document.getElementById("cooldownList");
+    const cooldown = getWatchedCooldown();
+
+    if (!cooldown.length) {
+        container.textContent = "no cooldown movies right now.";
+        return;
+    }
+
+    container.innerHTML = cooldown.map((item, index) => `
+        <div class="cooldown-item">
+            <span>${item.title} ${item.year ? `(${item.year})` : ""}</span>
+            <button data-index="${index}">remove</button>
+        </div>
+    `).join("");
+
+    container.querySelectorAll("button").forEach(btn => {
+        btn.addEventListener("click", () => {
+            let list = getWatchedCooldown();
+            list.splice(btn.dataset.index, 1);
+            setWatchedCooldown(list);
+            renderCooldownList();
+        });
+    });
+}
+
 let movies = [];
 let selectedVibes = new Set();
 let selectedDecades = new Set();
@@ -286,6 +312,20 @@ const runtimeDisplay = document.getElementById("runtimeDisplay");
 
 lengthSlider.addEventListener("input", () => {
     runtimeDisplay.textContent = lengthSlider.value;
+});
+
+const cooldownDrawer = document.getElementById("cooldownDrawer");
+const cooldownToggle = document.getElementById("cooldownToggle");
+const closeDrawer = document.getElementById("closeDrawer");
+
+cooldownToggle.addEventListener("click", (e) => {
+    e.preventDefault();
+    renderCooldownList();
+    cooldownDrawer.classList.remove("hidden");
+});
+
+closeDrawer.addEventListener("click", () => {
+    cooldownDrawer.classList.add("hidden");
 });
 
 loadMovies();
