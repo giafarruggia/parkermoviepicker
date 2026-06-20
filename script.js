@@ -86,28 +86,38 @@ const data = parsed.data.map(row => {
 }
 
 async function loadMovies() {
-    const cached = getCache();
+    try {
+        const cached = getCache();
 
-    if (cached) {
-        movies = cached;
-    } else {
-        movies = await loadMoviesFromCSV();
+        if (cached) {
+            movies = cached;
+        } else {
+            movies = await loadMoviesFromCSV();
+        }
+
+        const maxRuntime = Math.max(...movies.map(m => Number(m.length) || 0));
+        const roundedMax = Math.ceil(maxRuntime / 10) * 10;
+
+        const lengthSlider = document.getElementById("length");
+        const runtimeDisplay = document.getElementById("runtimeDisplay");
+
+        if (lengthSlider) {
+            lengthSlider.min = 0;
+            lengthSlider.max = roundedMax;
+            lengthSlider.value = roundedMax;
+        }
+
+        if (runtimeDisplay) {
+            runtimeDisplay.textContent = roundedMax;
+        }
+
+        populateMediums();
+        populateDecades();
+        populateVibes();
+
+    } catch (err) {
+        console.error("loadMovies crashed:", err);
     }
-
-    const maxRuntime = Math.max(...movies.map(m => Number(m.length) || 0));
-    const roundedMax = Math.ceil(maxRuntime / 10) * 10;
-
-    const lengthSlider = document.getElementById("length");
-    const runtimeDisplay = document.getElementById("runtimeDisplay");
-
-    if (lengthSlider) {
-    lengthSlider.min = 0;
-    lengthSlider.max = roundedMax;
-    lengthSlider.value = roundedMax;
-}
-
-    if (runtimeDisplay) {
-    runtimeDisplay.textContent = roundedMax;
 }
 
     populateMediums();
@@ -341,11 +351,6 @@ document.addEventListener("DOMContentLoaded", () => {
         renderCooldownList();
         cooldownDrawer.classList.remove("hidden");
     });
-
-    closeDrawer.addEventListener("click", () => {
-        cooldownDrawer.classList.add("hidden");
-    });
-});
 
     closeDrawer.addEventListener("click", () => {
         cooldownDrawer.classList.add("hidden");
