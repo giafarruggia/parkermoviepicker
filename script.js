@@ -50,7 +50,7 @@ async function loadMoviesFromCSV() {
 
     const data = parsed.data.map(row => ({
         title: row.title?.trim() || "",
-        year: row.year || "",
+        year: Number(row.year) || null,
         medium: row.medium || "",
         length: Number(row.length) || 0,
         vibes: (row.vibes || "")
@@ -228,11 +228,11 @@ function attachUIEvents() {
             const cooldownMatch = !isInCooldown(movie);
 
             const decadeMatch =
-                selectedDecades.size === 0 ||
-                selectedDecadesArray.some(decadeStart => {
-                    const year = Number(movie.year);
-                    return year >= decadeStart && year < decadeStart + 10;
-                });
+            selectedDecades.size === 0 ||
+            selectedDecadesArray.some(decadeStart => {
+            if (!movie.year) return false;
+            return movie.year >= decadeStart && movie.year <= decadeStart + 9;
+    });
 
             return mediumMatch && lengthMatch && vibesMatch && cooldownMatch;
         });
