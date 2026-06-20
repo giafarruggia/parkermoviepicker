@@ -330,6 +330,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     loadMovies();
 
+    const cooldownDrawer = document.getElementById("cooldownDrawer");
+const cooldownToggle = document.getElementById("cooldownToggle");
+const closeDrawer = document.getElementById("closeDrawer");
+
+console.log("drawer check:", cooldownDrawer, cooldownToggle, closeDrawer);
+
+if (cooldownToggle && cooldownDrawer) {
+    cooldownToggle.addEventListener("click", (e) => {
+        e.preventDefault();
+        renderCooldownList();
+        cooldownDrawer.classList.remove("hidden");
+    });
+}
+
+if (closeDrawer && cooldownDrawer) {
+    closeDrawer.addEventListener("click", () => {
+        cooldownDrawer.classList.add("hidden");
+    });
+}
+
     const refreshBtn = document.getElementById("refreshData");
 
     if (refreshBtn) {
