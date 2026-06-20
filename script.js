@@ -72,7 +72,19 @@ async function loadMovies() {
 
         console.log("movies loaded:", movies.length);
 
-        const maxRuntime = Math.max(...movies.map(m => Number(m.length) || 0));
+        if (!movies || !movies.length) {
+            console.warn("no movies loaded");
+            return;
+        }
+
+        const validLengths = movies
+            .map(m => Number(m.length))
+            .filter(n => !isNaN(n));
+
+        const maxRuntime = validLengths.length
+            ? Math.max(...validLengths)
+            : 0;
+
         const roundedMax = Math.ceil(maxRuntime / 10) * 10;
 
         const lengthSlider = document.getElementById("length");
@@ -92,7 +104,7 @@ async function loadMovies() {
         populateDecades();
         populateVibes();
 
-        initSlider(); // important hook
+        initSlider();
 
     } catch (err) {
         console.error("loadMovies crashed:", err);
