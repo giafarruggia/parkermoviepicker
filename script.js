@@ -267,21 +267,6 @@ function attachUIEvents() {
         };
     });
 
-    document.getElementById("randomMovie").addEventListener("click", () => {
-        const result = document.getElementById("result");
-
-        if (!movies.length) {
-            result.textContent = "movies still loading...";
-            return;
-        }
-
-        const movie = movies[Math.floor(Math.random() * movies.length)];
-
-        result.textContent = movie.year
-            ? `${movie.title} (${movie.year})`
-            : movie.title;
-    });
-
     document.getElementById("refreshData").addEventListener("click", async (e) => {
         e.preventDefault();
 
