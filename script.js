@@ -23,22 +23,24 @@ async function loadMoviesFromCSV() {
 
     console.log("done!");
 
-    const rows = text.trim().split(/\r?\n/);
+const parsed = Papa.parse(text, {
+    header: true,
+    skipEmptyLines: true,
+    dynamicTyping: true
+});
 
-    const data = rows.slice(1).map(row => {
-        const values = row.split(",");
-
-        return {
-            title: values[1]?.trim() || "",
-            year: values[2]?.trim() || "",
-            medium: values[3]?.trim() || "",
-            length: parseInt(values[4]) || 0,
-            vibes: (values[5] || "")
-                .split("|")
-                .map(v => v.trim())
-                .filter(Boolean)
-        };
-    });
+const data = parsed.data.map(row => {
+    return {
+        title: row.title?.trim() || "",
+        year: row.year || "",
+        medium: row.medium || "",
+        length: Number(row.length) || 0,
+        vibes: (row.vibes || "")
+            .split("|")
+            .map(v => v.trim())
+            .filter(Boolean)
+    };
+});
 
     setCache(data);
     return data;
