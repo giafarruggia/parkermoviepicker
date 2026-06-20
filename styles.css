@@ -90,9 +90,10 @@ button {
     padding: 6px 10px;
     border-radius: 999px;
     border: 1px solid #ccc;
-    background: white;
+    background: black;
     cursor: pointer;
     font-size: 0.85rem;
+    font-color: white;
     transition: all 0.2s ease;
 }
 
@@ -101,8 +102,8 @@ button {
 }
 
 .vibe-chip.active {
-    background: black;
-    color: white;
+    background: white;
+    color: black;
     border-color: black;
 }
 
