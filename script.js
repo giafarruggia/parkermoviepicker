@@ -75,8 +75,8 @@ async function loadMovies() {
     lengthSlider.min = 0;
     lengthSlider.max = roundedMax;
 
-    lengthSlider.value = Math.min(Math.floor(roundedMax * 0.5), roundedMax);
-    runtimeDisplay.textContent = lengthSlider.value;
+    lengthSlider.value = roundedMax;
+    runtimeDisplay.textContent = roundedMax;
 
     populateMediums();
     populateDecades();
