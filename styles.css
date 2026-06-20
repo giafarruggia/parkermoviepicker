@@ -227,3 +227,16 @@ button {
     padding: 3px 6px;
     font-size: 0.75rem;
 }
+
+
+.footer-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.footer-links .divider {
+    color: #777;
+}
