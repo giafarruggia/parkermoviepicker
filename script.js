@@ -249,7 +249,7 @@ function attachUIEvents() {
         )
     );
 
-            return mediumMatch && lengthMatch && vibesMatch && cooldownMatch;
+            return mediumMatch && lengthMatch && vibesMatch && cooldownMatch && decadeMatch;
         });
 
         const result = document.getElementById("result");
