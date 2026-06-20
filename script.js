@@ -1,4 +1,6 @@
 const CACHE_KEY = "movies_cache";
+const CSV_URL =
+    "https://docs.google.com/spreadsheets/d/1d34tKIHhvrtr1XP4iEjRDZrxMYpmwr7b123JzaOyyWo/export?format=csv&gid=991143387";
 
 function setCache(data) {
     localStorage.setItem(CACHE_KEY, JSON.stringify(data));
@@ -12,7 +14,10 @@ function getCache() {
 let movies = [];
 
 async function loadMoviesFromCSV() {
-    const response = await fetch(`movies.csv?v=${Date.now()}`);
+    const response = await fetch(
+    `${CSV_URL}&t=${Date.now()}`
+);
+    
     const text = await response.text();
 
     const rows = text.trim().split(/\r?\n/);
