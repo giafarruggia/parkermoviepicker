@@ -103,9 +103,9 @@ button {
 }
 
 .vibe-chip.active {
-    background: #e50914;
-    color: black;
-    border-color: #e50914;
+    background: #8C0000;
+    color: white;
+    border-color: #420000;
 }
 
 #result {
