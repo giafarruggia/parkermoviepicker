@@ -108,6 +108,28 @@ button {
     border-color: #420000;
 }
 
+.decade-chip {
+    margin: 2px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.15s ease;
+}
+
+.decade-chip:hover {
+    transform: translateY(-1px);
+}
+
+.decade-chip.active {
+    background: #8C0000;
+    color: white;
+    border-color: #420000;
+}
+
 #result {
     margin-top: 20px;
     font-size: 1.5rem;
