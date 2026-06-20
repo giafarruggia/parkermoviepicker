@@ -335,17 +335,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     loadMovies();
 
-    const lengthSlider = document.getElementById("length");
-    const runtimeDisplay = document.getElementById("runtimeDisplay");
-
-    function updateRuntimeDisplay() {
-        runtimeDisplay.textContent = `${lengthSlider.value} min`;
-    }
-
-    lengthSlider.addEventListener("input", updateRuntimeDisplay);
-
-    updateRuntimeDisplay();
-
     const cooldownDrawer = document.getElementById("cooldownDrawer");
 const cooldownToggle = document.getElementById("cooldownToggle");
 const closeDrawer = document.getElementById("closeDrawer");
@@ -386,6 +375,18 @@ if (closeDrawer && cooldownDrawer) {
                 populateMediums();
                 populateDecades();
                 populateVibes();
+
+                const lengthSlider = document.getElementById("length");
+const runtimeDisplay = document.getElementById("runtimeDisplay");
+
+if (lengthSlider && runtimeDisplay) {
+    function updateRuntimeDisplay() {
+        runtimeDisplay.textContent = `${lengthSlider.value} min`;
+    }
+
+    lengthSlider.addEventListener("input", updateRuntimeDisplay);
+    updateRuntimeDisplay();
+}
 
                 document.getElementById("result").textContent = "mmm... fresh data.";
             } catch (err) {
