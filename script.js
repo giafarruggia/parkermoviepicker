@@ -137,7 +137,7 @@ function populateVibes() {
 document.getElementById("pickMovie").addEventListener("click", () => {
 
     const medium = document.getElementById("medium").value;
-    const maxLength = parseInt(document.getElementById("length").value);
+    const maxLength = Number(document.getElementById("length").value);
 
     const selectedVibesArray = [...selectedVibes];
 
@@ -230,5 +230,11 @@ document.getElementById("refreshData").addEventListener("click", async (e) => {
     }
 });
 
+const lengthSlider = document.getElementById("length");
+const runtimeDisplay = document.getElementById("runtimeDisplay");
+
+lengthSlider.addEventListener("input", () => {
+    runtimeDisplay.textContent = lengthSlider.value;
+});
 
 loadMovies();
