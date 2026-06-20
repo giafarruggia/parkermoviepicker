@@ -13,6 +13,7 @@ function getCache() {
 
 let movies = [];
 let selectedVibes = new Set();
+let selectedDecades = new Set();
 
 async function loadMoviesFromCSV() {
     console.log("fetching...");
@@ -72,6 +73,38 @@ function populateMediums() {
     });
 }
 
+function populateDecades() {
+    const container = document.getElementById("decadesContainer");
+
+    const decades = [...new Set(
+        movies
+            .map(m => Number(m.year))
+            .filter(y => !isNaN(y))
+            .map(year => Math.floor(year / 10) * 10)
+    )].sort((a, b) => a - b);
+
+    container.innerHTML = "";
+
+    decades.forEach(decadeStart => {
+        const chip = document.createElement("button");
+        chip.className = "decade-chip";
+        chip.textContent = `${decadeStart}s`;
+        chip.dataset.decade = decadeStart;
+
+        chip.addEventListener("click", () => {
+            chip.classList.toggle("active");
+
+            if (selectedDecades.has(decadeStart)) {
+                selectedDecades.delete(decadeStart);
+            } else {
+                selectedDecades.add(decadeStart);
+            }
+        });
+
+        container.appendChild(chip);
+    });
+}
+
 function populateVibes() {
     const allVibes = [...new Set(
         movies.flatMap(movie => movie.vibes)
@@ -107,6 +140,8 @@ document.getElementById("pickMovie").addEventListener("click", () => {
 
     const selectedVibesArray = [...selectedVibes];
 
+    const selectedDecadesArray = [...selectedDecades];
+
     const filtered = movies.filter(movie => {
 
         const mediumMatch =
@@ -120,7 +155,16 @@ document.getElementById("pickMovie").addEventListener("click", () => {
         movie.vibes.includes(vibe)
     );
 
-        return mediumMatch && lengthMatch && vibesMatch;
+        const decadeMatch =
+    selectedDecades.size === 0 ||
+    selectedDecadesArray.some(decadeStart => {
+        const year = Number(movie.year);
+        if (!year) return false;
+
+        return year >= decadeStart && year < decadeStart + 10;
+    });
+
+        return mediumMatch && lengthMatch && vibesMatch && decadeMatch;
     });
 
     const result = document.getElementById("result");
@@ -173,6 +217,7 @@ document.getElementById("refreshData").addEventListener("click", async (e) => {
         document.getElementById("vibesContainer").innerHTML = "";
 
         populateMediums();
+        populateDecades();
         populateVibes();
 
         document.getElementById("result").textContent = "mmm... fresh data.";
