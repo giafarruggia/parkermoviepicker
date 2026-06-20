@@ -102,7 +102,7 @@ async function loadMovies() {
     lengthSlider.max = roundedMax;
 
     lengthSlider.value = roundedMax;
-    runtimeDisplay.textContent = roundedMax;
+    if (runtimeDisplay) runtimeDisplay.textContent = roundedMax;
 
     populateMediums();
     populateDecades();
@@ -112,6 +112,7 @@ async function loadMovies() {
 function populateMediums() {
     const mediums = [...new Set(movies.map(m => m.medium))].sort();
     const select = document.getElementById("medium");
+    if (!select) return;
 
     mediums.forEach(medium => {
         const option = document.createElement("option");
@@ -123,6 +124,8 @@ function populateMediums() {
 
 function populateDecades() {
     const container = document.getElementById("decadesContainer");
+    if (!container) return;
+    container.innerHTML = "";
 
     const decades = [...new Set(
         movies
@@ -159,6 +162,7 @@ function populateVibes() {
     )].sort();
 
     const container = document.getElementById("vibesContainer");
+    if (!container) return;
     container.innerHTML = "";
 
     allVibes.forEach(vibe => {
@@ -328,4 +332,4 @@ closeDrawer.addEventListener("click", () => {
     cooldownDrawer.classList.add("hidden");
 });
 
-loadMovies();
+document.addEventListener("DOMContentLoaded", loadMovies);
