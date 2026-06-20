@@ -14,11 +14,14 @@ function getCache() {
 let movies = [];
 
 async function loadMoviesFromCSV() {
+    console.log("fetching...");
     const response = await fetch(
     `${CSV_URL}&t=${Date.now()}`
 );
     
     const text = await response.text();
+
+    console.log("done!");
 
     const rows = text.trim().split(/\r?\n/);
 
@@ -151,19 +154,25 @@ document.getElementById("randomMovie").addEventListener("click", () => {
 document.getElementById("refreshData").addEventListener("click", async (e) => {
     e.preventDefault();
 
-    localStorage.removeItem(CACHE_KEY);
+    try {
+        localStorage.removeItem(CACHE_KEY);
 
-    movies = await loadMoviesFromCSV();
+        movies = await loadMoviesFromCSV();
 
-    document.getElementById("medium").innerHTML =
-        '<option value="">any medium</option>';
+        document.getElementById("medium").innerHTML =
+            '<option value="">any medium</option>';
 
-    document.getElementById("vibesContainer").innerHTML = "";
+        document.getElementById("vibesContainer").innerHTML = "";
 
-    populateMediums();
-    populateVibes();
+        populateMediums();
+        populateVibes();
 
-    document.getElementById("result").textContent = "mmm... fresh data.";
+        document.getElementById("result").textContent = "mmm... fresh data.";
+    } catch (err) {
+        console.error("refresh failed:", err);
+        document.getElementById("result").textContent =
+            "hmm... something's broken.";
+    }
 });
 
 
