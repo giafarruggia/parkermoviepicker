@@ -318,18 +318,23 @@ lengthSlider.addEventListener("input", () => {
     runtimeDisplay.textContent = lengthSlider.value;
 });
 
-const cooldownDrawer = document.getElementById("cooldownDrawer");
-const cooldownToggle = document.getElementById("cooldownToggle");
-const closeDrawer = document.getElementById("closeDrawer");
+document.addEventListener("DOMContentLoaded", () => {
+    const cooldownDrawer = document.getElementById("cooldownDrawer");
+    const cooldownToggle = document.getElementById("cooldownToggle");
+    const closeDrawer = document.getElementById("closeDrawer");
 
-cooldownToggle.addEventListener("click", (e) => {
-    e.preventDefault();
-    renderCooldownList();
-    cooldownDrawer.classList.remove("hidden");
+    if (!cooldownDrawer || !cooldownToggle || !closeDrawer) {
+        console.error("drawer elements missing");
+        return;
+    }
+
+    cooldownToggle.addEventListener("click", (e) => {
+        e.preventDefault();
+        renderCooldownList();
+        cooldownDrawer.classList.remove("hidden");
+    });
+
+    closeDrawer.addEventListener("click", () => {
+        cooldownDrawer.classList.add("hidden");
+    });
 });
-
-closeDrawer.addEventListener("click", () => {
-    cooldownDrawer.classList.add("hidden");
-});
-
-document.addEventListener("DOMContentLoaded", loadMovies);
