@@ -326,31 +326,35 @@ document.getElementById("refreshData").addEventListener("click", async (e) => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    const cooldownDrawer = document.getElementById("cooldownDrawer");
-    const cooldownToggle = document.getElementById("cooldownToggle");
-    const closeDrawer = document.getElementById("closeDrawer");
+    console.log("DOM ready");
 
-    const lengthSlider = document.getElementById("length");
-    const runtimeDisplay = document.getElementById("runtimeDisplay");
+    loadMovies();
 
-    if (!cooldownDrawer || !cooldownToggle || !closeDrawer) {
-        console.error("drawer elements missing");
-        return;
-    }
+    const refreshBtn = document.getElementById("refreshData");
 
-    if (lengthSlider && runtimeDisplay) {
-        lengthSlider.addEventListener("input", () => {
-            runtimeDisplay.textContent = lengthSlider.value;
+    if (refreshBtn) {
+        refreshBtn.addEventListener("click", async (e) => {
+            e.preventDefault();
+
+            try {
+                localStorage.removeItem(CACHE_KEY);
+
+                movies = await loadMoviesFromCSV();
+
+                document.getElementById("medium").innerHTML =
+                    '<option value="">any medium</option>';
+
+                document.getElementById("vibesContainer").innerHTML = "";
+                document.getElementById("decadesContainer").innerHTML = "";
+
+                populateMediums();
+                populateDecades();
+                populateVibes();
+
+                document.getElementById("result").textContent = "mmm... fresh data.";
+            } catch (err) {
+                console.error("refresh failed:", err);
+            }
         });
     }
-
-    cooldownToggle.addEventListener("click", (e) => {
-        e.preventDefault();
-        renderCooldownList();
-        cooldownDrawer.classList.remove("hidden");
-    });
-
-    closeDrawer.addEventListener("click", () => {
-        cooldownDrawer.classList.add("hidden");
-    });
 });
