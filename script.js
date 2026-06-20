@@ -50,7 +50,7 @@ async function loadMoviesFromCSV() {
 
     const data = parsed.data.map(row => ({
         title: row.title?.trim() || "",
-        year: Number(row.year) || null,
+        year: Number(row.year)
         medium: row.medium || "",
         length: Number(row.length) || 0,
         vibes: (row.vibes || "")
@@ -125,7 +125,7 @@ function populateDecades() {
     const decades = [...new Set(
         movies
             .map(m => Number(m.year))
-            .filter(y => !isNaN(y))
+            .filter(year => !isNaN(year))
             .map(year => Math.floor(year / 10) * 10)
     )].sort((a, b) => a - b);
 
@@ -227,12 +227,15 @@ function attachUIEvents() {
 
             const cooldownMatch = !isInCooldown(movie);
 
+            const movieYear = Number(movie.year);
+
             const decadeMatch =
-            selectedDecades.size === 0 ||
-            selectedDecadesArray.some(decadeStart => {
-            if (!movie.year) return false;
-            return movie.year >= decadeStart && movie.year <= decadeStart + 9;
-    });
+        selectedDecades.size === 0 ||
+        (Number.isFinite(movieYear) &&
+        selectedDecadesArray.some(decadeStart =>
+            movieYear >= decadeStart && movieYear <= decadeStart + 9
+        )
+    );
 
             return mediumMatch && lengthMatch && vibesMatch && cooldownMatch;
         });
