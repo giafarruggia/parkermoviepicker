@@ -1,4 +1,6 @@
 const CACHE_KEY = "movies_cache";
+const WATCHED_KEY = "movies_watched_cooldown";
+const COOLDOWN_LIMIT = 50;
 const CSV_URL =
     "https://docs.google.com/spreadsheets/d/1d34tKIHhvrtr1XP4iEjRDZrxMYpmwr7b123JzaOyyWo/export?format=csv&gid=991143387";
 
@@ -9,6 +11,15 @@ function setCache(data) {
 function getCache() {
     const raw = localStorage.getItem(CACHE_KEY);
     return raw ? JSON.parse(raw) : null;
+}
+
+function getWatchedCooldown() {
+    const raw = localStorage.getItem(WATCHED_KEY);
+    return raw ? JSON.parse(raw) : [];
+}
+
+function setWatchedCooldown(data) {
+    localStorage.setItem(WATCHED_KEY, JSON.stringify(data));
 }
 
 let movies = [];
@@ -144,6 +155,13 @@ function populateVibes() {
     });
 }
 
+function isInCooldown(movie) {
+    const cooldown = getWatchedCooldown();
+    return cooldown.some(item =>
+        item.title === movie.title && item.year === movie.year
+    );
+}
+
 document.getElementById("pickMovie").addEventListener("click", () => {
 
     const medium = document.getElementById("medium").value;
@@ -164,6 +182,8 @@ document.getElementById("pickMovie").addEventListener("click", () => {
         const vibesMatch =
     selectedVibesArray.every(vibe =>
         movie.vibes.includes(vibe)
+
+        const cooldownMatch = !isInCooldown(movie);
     );
 
         const decadeMatch =
@@ -175,7 +195,7 @@ document.getElementById("pickMovie").addEventListener("click", () => {
         return year >= decadeStart && year < decadeStart + 10;
     });
 
-        return mediumMatch && lengthMatch && vibesMatch && decadeMatch;
+        return cooldownMatch && mediumMatch && lengthMatch && vibesMatch && decadeMatch;
     });
 
     const result = document.getElementById("result");
@@ -189,9 +209,30 @@ document.getElementById("pickMovie").addEventListener("click", () => {
         filtered[Math.floor(Math.random() * filtered.length)];
 
     result.textContent =
-        movie.year
-            ? `${movie.title} (${movie.year})`
-            : movie.title;
+     result.innerHTML = `
+  <div>
+    <div>${movie.year ? `${movie.title} (${movie.year})` : movie.title}</div>
+    <button id="watchingBtn">i'm watching this!</button>
+  </div>
+`;
+
+document.getElementById("watchingBtn").addEventListener("click", () => {
+    let cooldown = getWatchedCooldown();
+
+    cooldown.push({
+        title: movie.title,
+        year: movie.year
+    });
+
+    // keep only last 50 entries
+    if (cooldown.length > COOLDOWN_LIMIT) {
+        cooldown = cooldown.slice(cooldown.length - COOLDOWN_LIMIT);
+    }
+
+    setWatchedCooldown(cooldown);
+
+    result.textContent = "it’s out of rotation for a while.";
+});
 });
 
 let lastRandomIndex = -1;
