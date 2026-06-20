@@ -12,6 +12,7 @@ function getCache() {
 }
 
 let movies = [];
+let selectedVibes = new Set();
 
 async function loadMoviesFromCSV() {
     console.log("fetching...");
@@ -77,19 +78,25 @@ function populateVibes() {
     )].sort();
 
     const container = document.getElementById("vibesContainer");
+    container.innerHTML = "";
 
     allVibes.forEach(vibe => {
-        const label = document.createElement("label");
+        const chip = document.createElement("button");
+        chip.className = "vibe-chip";
+        chip.textContent = vibe;
+        chip.dataset.vibe = vibe;
 
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.value = vibe;
-        checkbox.className = "vibe-checkbox";
+        chip.addEventListener("click", () => {
+            chip.classList.toggle("active");
 
-        label.appendChild(checkbox);
-        label.append(" " + vibe);
+            if (selectedVibes.has(vibe)) {
+                selectedVibes.delete(vibe);
+            } else {
+                selectedVibes.add(vibe);
+            }
+        });
 
-        container.appendChild(label);
+        container.appendChild(chip);
     });
 }
 
@@ -98,8 +105,7 @@ document.getElementById("pickMovie").addEventListener("click", () => {
     const medium = document.getElementById("medium").value;
     const maxLength = parseInt(document.getElementById("length").value);
 
-    const selectedVibes = [...document.querySelectorAll(".vibe-checkbox:checked")]
-        .map(cb => cb.value);
+    const selectedVibesArray = [...selectedVibes];
 
     const filtered = movies.filter(movie => {
 
@@ -110,9 +116,9 @@ document.getElementById("pickMovie").addEventListener("click", () => {
             movie.length <= maxLength;
 
         const vibesMatch =
-            selectedVibes.every(vibe =>
-                movie.vibes.includes(vibe)
-            );
+    selectedVibesArray.every(vibe =>
+        movie.vibes.includes(vibe)
+    );
 
         return mediumMatch && lengthMatch && vibesMatch;
     });
