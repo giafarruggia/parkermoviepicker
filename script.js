@@ -330,6 +330,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     loadMovies();
 
+    document.addEventListener("DOMContentLoaded", () => {
+    console.log("DOM ready");
+
+    loadMovies();
+
+    const lengthSlider = document.getElementById("length");
+    const runtimeDisplay = document.getElementById("runtimeDisplay");
+
+    function updateRuntimeDisplay() {
+        runtimeDisplay.textContent = `${lengthSlider.value} min`;
+    }
+
+    lengthSlider.addEventListener("input", updateRuntimeDisplay);
+
+    updateRuntimeDisplay();
+
     const cooldownDrawer = document.getElementById("cooldownDrawer");
 const cooldownToggle = document.getElementById("cooldownToggle");
 const closeDrawer = document.getElementById("closeDrawer");
