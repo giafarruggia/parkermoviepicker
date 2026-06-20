@@ -179,12 +179,12 @@ document.getElementById("pickMovie").addEventListener("click", () => {
     const lengthMatch =
             movie.length <= maxLength;
 
-        const vibesMatch =
+const vibesMatch =
     selectedVibesArray.every(vibe =>
         movie.vibes.includes(vibe)
-
-        const cooldownMatch = !isInCooldown(movie);
     );
+
+const cooldownMatch = !isInCooldown(movie);
 
         const decadeMatch =
     selectedDecades.size === 0 ||
@@ -208,15 +208,16 @@ document.getElementById("pickMovie").addEventListener("click", () => {
     const movie =
         filtered[Math.floor(Math.random() * filtered.length)];
 
-    result.textContent =
-     result.innerHTML = `
+result.innerHTML = `
   <div>
     <div>${movie.year ? `${movie.title} (${movie.year})` : movie.title}</div>
     <button id="watchingBtn">i'm watching this!</button>
   </div>
 `;
 
-document.getElementById("watchingBtn").addEventListener("click", () => {
+const btn = document.getElementById("watchingBtn");
+
+btn.onclick = () => {
     let cooldown = getWatchedCooldown();
 
     cooldown.push({
@@ -224,15 +225,14 @@ document.getElementById("watchingBtn").addEventListener("click", () => {
         year: movie.year
     });
 
-    // keep only last 50 entries
     if (cooldown.length > COOLDOWN_LIMIT) {
-        cooldown = cooldown.slice(cooldown.length - COOLDOWN_LIMIT);
+        cooldown = cooldown.slice(-COOLDOWN_LIMIT);
     }
 
     setWatchedCooldown(cooldown);
 
     result.textContent = "it’s out of rotation for a while.";
-});
+};
 });
 
 let lastRandomIndex = -1;
