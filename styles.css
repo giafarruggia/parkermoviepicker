@@ -153,6 +153,18 @@ button {
     font-size: 0.8rem;
 }
 
+#watchingBtn {
+    margin-top: 12px;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    background: #8C0000;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-block;
+}
+
 #result {
     margin-top: 20px;
     font-size: 1.5rem;
