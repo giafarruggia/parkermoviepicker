@@ -62,7 +62,6 @@ function populateMediums() {
         const option = document.createElement("option");
         option.value = medium;
         option.textContent = medium;
-        document.getElementById("medium").appendChild(option);
         select.appendChild(option);
     });
 }
@@ -153,7 +152,6 @@ document.getElementById("refreshData").addEventListener("click", async (e) => {
     e.preventDefault();
 
     localStorage.removeItem(CACHE_KEY);
-    localStorage.removeItem(TIME_KEY);
 
     movies = await loadMoviesFromCSV();
 
