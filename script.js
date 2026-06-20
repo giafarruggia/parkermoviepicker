@@ -98,11 +98,17 @@ async function loadMovies() {
     const roundedMax = Math.ceil(maxRuntime / 10) * 10;
 
     const lengthSlider = document.getElementById("length");
+    const runtimeDisplay = document.getElementById("runtimeDisplay");
+
+    if (lengthSlider) {
     lengthSlider.min = 0;
     lengthSlider.max = roundedMax;
-
     lengthSlider.value = roundedMax;
-    if (runtimeDisplay) runtimeDisplay.textContent = roundedMax;
+}
+
+    if (runtimeDisplay) {
+    runtimeDisplay.textContent = roundedMax;
+}
 
     populateMediums();
     populateDecades();
@@ -311,21 +317,23 @@ document.getElementById("refreshData").addEventListener("click", async (e) => {
     }
 });
 
-const lengthSlider = document.getElementById("length");
-const runtimeDisplay = document.getElementById("runtimeDisplay");
-
-lengthSlider.addEventListener("input", () => {
-    runtimeDisplay.textContent = lengthSlider.value;
-});
-
 document.addEventListener("DOMContentLoaded", () => {
     const cooldownDrawer = document.getElementById("cooldownDrawer");
     const cooldownToggle = document.getElementById("cooldownToggle");
     const closeDrawer = document.getElementById("closeDrawer");
 
+    const lengthSlider = document.getElementById("length");
+    const runtimeDisplay = document.getElementById("runtimeDisplay");
+
     if (!cooldownDrawer || !cooldownToggle || !closeDrawer) {
         console.error("drawer elements missing");
         return;
+    }
+
+    if (lengthSlider && runtimeDisplay) {
+        lengthSlider.addEventListener("input", () => {
+            runtimeDisplay.textContent = lengthSlider.value;
+        });
     }
 
     cooldownToggle.addEventListener("click", (e) => {
@@ -333,6 +341,11 @@ document.addEventListener("DOMContentLoaded", () => {
         renderCooldownList();
         cooldownDrawer.classList.remove("hidden");
     });
+
+    closeDrawer.addEventListener("click", () => {
+        cooldownDrawer.classList.add("hidden");
+    });
+});
 
     closeDrawer.addEventListener("click", () => {
         cooldownDrawer.classList.add("hidden");
