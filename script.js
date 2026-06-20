@@ -58,6 +58,7 @@ async function loadMovies() {
     }
 
     populateMediums();
+    populateDecades();
     populateVibes();
 }
 
@@ -212,9 +213,10 @@ document.getElementById("refreshData").addEventListener("click", async (e) => {
         movies = await loadMoviesFromCSV();
 
         document.getElementById("medium").innerHTML =
-            '<option value="">any medium</option>';
+    '<option value="">any medium</option>';
 
         document.getElementById("vibesContainer").innerHTML = "";
+        document.getElementById("decadesContainer").innerHTML = "";
 
         populateMediums();
         populateDecades();
