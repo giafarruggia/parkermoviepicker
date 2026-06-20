@@ -1,3 +1,5 @@
+console.log("script loaded");
+
 const CACHE_KEY = "movies_cache";
 const WATCHED_KEY = "movies_watched_cooldown";
 const COOLDOWN_LIMIT = 50;
