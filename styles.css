@@ -129,6 +129,30 @@ button {
     border-color: #420000;
 }
 
+.runtime-wrapper {
+    margin: 10px 0;
+    color: white;
+    font-size: 0.85rem;
+}
+
+.runtime-wrapper label {
+    display: block;
+    margin-bottom: 4px;
+    opacity: 0.8;
+}
+
+#length {
+    width: 100%;
+    accent-color: #8C0000;
+    cursor: pointer;
+}
+
+.runtime-value {
+    margin-top: 4px;
+    opacity: 0.8;
+    font-size: 0.8rem;
+}
+
 #result {
     margin-top: 20px;
     font-size: 1.5rem;
