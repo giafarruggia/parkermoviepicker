@@ -61,10 +61,11 @@ async function loadMovies() {
     const roundedMax = Math.ceil(maxRuntime / 10) * 10;
 
     const lengthSlider = document.getElementById("length");
+    lengthSlider.min = 0;
     lengthSlider.max = roundedMax;
 
-    lengthSlider.value = Math.floor(roundedMax * 0.5);
-    document.getElementById("runtimeDisplay").textContent = lengthSlider.value;
+    lengthSlider.value = Math.min(Math.floor(roundedMax * 0.5), roundedMax);
+    runtimeDisplay.textContent = lengthSlider.value;
 
     populateMediums();
     populateDecades();
