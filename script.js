@@ -27,7 +27,7 @@ function renderCooldownList() {
     const cooldown = getWatchedCooldown();
 
     if (!cooldown.length) {
-        container.textContent = "no cooldown movies right now.";
+        container.textContent = "no recently watched yet.";
         return;
     }
 
