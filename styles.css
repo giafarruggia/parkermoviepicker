@@ -174,3 +174,56 @@ button {
     border: 1px solid white;
     border-radius: 8px;
 }
+
+.drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 320px;
+    height: 100%;
+    background: #111;
+    color: #fff;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.4);
+    transform: translateX(0);
+    transition: transform 0.25s ease;
+    z-index: 9999;
+}
+
+.drawer.hidden {
+    transform: translateX(100%);
+}
+
+.drawer-content {
+    padding: 16px;
+}
+
+.drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.drawer button {
+    background: #d62828;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.cooldown-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 8px 0;
+    padding: 6px;
+    border-bottom: 1px solid #333;
+}
+
+.cooldown-item button {
+    background: #444;
+    padding: 3px 6px;
+    font-size: 0.75rem;
+}
