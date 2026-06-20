@@ -1,10 +1,7 @@
 const CACHE_KEY = "movies_cache";
-const TIME_KEY = "movies_cache_time";
-const ONE_HOUR = 1000 * 60 * 60;
 
 function setCache(data) {
     localStorage.setItem(CACHE_KEY, JSON.stringify(data));
-    localStorage.setItem(TIME_KEY, Date.now());
 }
 
 function getCache() {
@@ -12,15 +9,10 @@ function getCache() {
     return raw ? JSON.parse(raw) : null;
 }
 
-function isStale() {
-    const last = Number(localStorage.getItem(TIME_KEY));
-    return !last || (Date.now() - last > ONE_HOUR);
-}
-
 let movies = [];
 
 async function loadMoviesFromCSV() {
-    const response = await fetch("movies.csv");
+    const response = await fetch(`movies.csv?v=${Date.now()}`);
     const text = await response.text();
 
     const rows = text.trim().split(/\r?\n/);
@@ -47,21 +39,14 @@ async function loadMoviesFromCSV() {
 async function loadMovies() {
     const cached = getCache();
 
-    // 🧊 1. instant load from cache if available
     if (cached) {
         movies = cached;
-        populateMediums();
-        populateVibes();
+    } else {
+        movies = await loadMoviesFromCSV();
     }
 
-    // 🔄 2. refresh in background if stale or missing
-    if (isStale() || !cached) {
-        const fresh = await loadMoviesFromCSV();
-
-        movies = fresh;
-        populateMediums();
-        populateVibes();
-    }
+    populateMediums();
+    populateVibes();
 }
 
 function populateMediums() {
