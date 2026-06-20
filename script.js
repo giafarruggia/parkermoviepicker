@@ -1,5 +1,3 @@
-console.log("script loaded");
-
 const CACHE_KEY = "movies_cache";
 const WATCHED_KEY = "movies_watched_cooldown";
 const COOLDOWN_LIMIT = 50;
@@ -88,6 +86,7 @@ const data = parsed.data.map(row => {
 }
 
 async function loadMovies() {
+    console.log("loadMovies started");
     try {
         const cached = getCache();
 
@@ -96,6 +95,8 @@ async function loadMovies() {
         } else {
             movies = await loadMoviesFromCSV();
         }
+
+        console.log("movies loaded:", movies.length);
 
         const maxRuntime = Math.max(...movies.map(m => Number(m.length) || 0));
         const roundedMax = Math.ceil(maxRuntime / 10) * 10;
