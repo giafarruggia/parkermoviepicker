@@ -96,6 +96,13 @@ button {
     border-color: #420000;
 }
 
+.movie-tags {
+    font-size: 0.8rem;
+    color: #707070;
+    margin: 6px 0 14px;
+    line-height: 1.4;
+}
+
 .runtime-wrapper {
     margin: 10px 0;
     color: white;
