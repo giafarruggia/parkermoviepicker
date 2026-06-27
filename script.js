@@ -97,7 +97,7 @@ async function loadMovies() {
         }
 
         if (runtimeDisplay) {
-            runtimeDisplay.textContent = `${roundedMax} min`;
+            runtimeDisplay.textContent = `${roundedMax}`;
         }
 
         populateMediums();
