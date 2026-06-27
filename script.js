@@ -262,11 +262,16 @@ function attachUIEvents() {
         const movie = filtered[Math.floor(Math.random() * filtered.length)];
 
         result.innerHTML = `
-            <div>
-                <div>${movie.year ? `${movie.title} (${movie.year})` : movie.title}</div>
-                <button id="watchingBtn">i'm watching this!</button>
-            </div>
-        `;
+    <div>
+        <div>${movie.year ? `${movie.title} (${movie.year})` : movie.title}</div>
+
+        <div class="movie-tags">
+            ${movie.vibes.join(" • ")}
+        </div>
+
+        <button id="watchingBtn">i'm watching this!</button>
+    </div>
+`;
 
         document.getElementById("watchingBtn").onclick = () => {
             let cooldown = getWatchedCooldown();
