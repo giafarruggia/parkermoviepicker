@@ -223,6 +223,24 @@ function isInCooldown(movie) {
 -------------------------- */
 
 function attachUIEvents() {
+    document.getElementById("resetFilters").addEventListener("click", (e) => {
+    e.preventDefault();
+
+    document.getElementById("medium").value = "";
+
+    const slider = document.getElementById("length");
+    slider.value = slider.max;
+    document.getElementById("runtimeDisplay").textContent = `${slider.max} min`;
+
+    selectedVibes.clear();
+    selectedDecades.clear();
+
+    document.querySelectorAll(".vibe-chip.active, .decade-chip.active")
+        .forEach(chip => chip.classList.remove("active"));
+
+    document.getElementById("result").innerHTML = "";
+});
+    
     document.getElementById("pickMovie").addEventListener("click", () => {
         const medium = document.getElementById("medium").value;
         const maxLength = Number(document.getElementById("length").value);
