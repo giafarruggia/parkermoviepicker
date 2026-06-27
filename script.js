@@ -200,7 +200,7 @@ function initSlider() {
     if (!lengthSlider || !runtimeDisplay) return;
 
     const update = () => {
-        runtimeDisplay.textContent = `${lengthSlider.value} min`;
+        runtimeDisplay.textContent = `${lengthSlider.value}`;
     };
 
     lengthSlider.addEventListener("input", update);
@@ -230,7 +230,7 @@ function attachUIEvents() {
 
     const slider = document.getElementById("length");
     slider.value = slider.max;
-    document.getElementById("runtimeDisplay").textContent = `${slider.max} min`;
+    document.getElementById("runtimeDisplay").textContent = `${slider.max}`;
 
     selectedVibes.clear();
     selectedDecades.clear();
