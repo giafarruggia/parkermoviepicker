@@ -140,11 +140,11 @@ button {
 }
 
 #result {
-    margin-top: 20px;
+    margin-top: 10px;
     font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
-    padding: 15px;
+    padding: 10px;
     border: 1px solid white;
     border-radius: 8px;
 }
