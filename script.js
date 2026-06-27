@@ -266,7 +266,7 @@ function attachUIEvents() {
         <div>${movie.year ? `${movie.title} (${movie.year})` : movie.title}</div>
 
         <div class="movie-tags">
-            ${movie.vibes.join(" • ")}
+            ${[...movie.vibes].sort().join(" • ")}
         </div>
 
         <button id="watchingBtn">i'm watching this!</button>
