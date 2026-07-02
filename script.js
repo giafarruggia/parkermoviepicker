@@ -1,5 +1,5 @@
 const CACHE_KEY = "movies_cache";
-const SHEET_API = "https://script.google.com/macros/s/AKfycbxZqS70RhP_Zhi6bGlDs13IZ3toJIltY5U43WRzrMxTDBvw-y3BBXJd9TyxyX2k_RY/exec";
+const WATCHED_KEY = "movies_watched_cooldown";
 const COOLDOWN_LIMIT = 50;
 
 const CSV_URL =
@@ -20,6 +20,15 @@ function setCache(data) {
 function getCache() {
     const raw = localStorage.getItem(CACHE_KEY);
     return raw ? JSON.parse(raw) : null;
+}
+
+function getWatchedCooldown() {
+    const raw = localStorage.getItem(WATCHED_KEY);
+    return raw ? JSON.parse(raw) : [];
+}
+
+function setWatchedCooldown(data) {
+    localStorage.setItem(WATCHED_KEY, JSON.stringify(data));
 }
 
 /* -------------------------
@@ -202,10 +211,11 @@ function initSlider() {
    COOLDOWN LOGIC
 -------------------------- */
 
-async function getWatchedCooldown() {
-    const res = await fetch(`${SHEET_API}?action=get`);
-    const data = await res.json();
-    return data || [];
+function isInCooldown(movie) {
+    const cooldown = getWatchedCooldown();
+    return cooldown.some(item =>
+        item.title === movie.title && item.year === movie.year
+    );
 }
 
 /* -------------------------
@@ -231,14 +241,13 @@ function attachUIEvents() {
     document.getElementById("result").innerHTML = "";
 });
     
-    document.getElementById("pickMovie").addEventListener("click", async () => {
+    document.getElementById("pickMovie").addEventListener("click", () => {
         const medium = document.getElementById("medium").value;
         const maxLength = Number(document.getElementById("length").value);
 
         const selectedVibesArray = [...selectedVibes];
         const selectedDecadesArray = [...selectedDecades];
 
-        const cooldown = await getWatchedCooldown();
         const filtered = movies.filter(movie => {
             const mediumMatch = !medium || movie.medium === medium;
             const lengthMatch = movie.length <= maxLength;
@@ -246,9 +255,7 @@ function attachUIEvents() {
             const vibesMatch =
                 selectedVibesArray.every(v => movie.vibes.includes(v));
 
-            const cooldownMatch = !cooldown.some(item =>
-            item.title === movie.title && item.year === movie.year
-);
+            const cooldownMatch = !isInCooldown(movie);
 
             const movieYear = Number(movie.year);
 
@@ -284,22 +291,25 @@ function attachUIEvents() {
     </div>
 `;
 
-document.getElementById("watchingBtn").onclick = async () => {
-    await fetch(`${SHEET_API}?action=add`, {
-        method: "POST",
-        body: new URLSearchParams({
-            title: movie.title,
-            year: movie.year
-        })
-    });
+        document.getElementById("watchingBtn").onclick = () => {
+            let cooldown = getWatchedCooldown();
 
-    result.textContent = "it’s out of rotation for a while.";
-};
+            cooldown.push({ title: movie.title, year: movie.year });
+
+            if (cooldown.length > COOLDOWN_LIMIT) {
+                cooldown = cooldown.slice(-COOLDOWN_LIMIT);
+            }
+
+            setWatchedCooldown(cooldown);
+            result.textContent = "it’s out of rotation for a while.";
+        };
+    });
 
     document.getElementById("refreshData").addEventListener("click", async (e) => {
         e.preventDefault();
 
         try {
+            localStorage.removeItem(CACHE_KEY);
             movies = await loadMoviesFromCSV();
 
             document.getElementById("medium").innerHTML =
@@ -349,7 +359,7 @@ function initCooldownDrawer() {
 
 function renderCooldownList() {
     const container = document.getElementById("cooldownList");
-    const cooldown = ();
+    const cooldown = getWatchedCooldown();
 
     if (!cooldown.length) {
         container.textContent = "no recently watched yet.";
@@ -365,7 +375,7 @@ function renderCooldownList() {
 
     container.querySelectorAll("button").forEach(btn => {
         btn.addEventListener("click", () => {
-            let list = ();
+            let list = getWatchedCooldown();
             list.splice(btn.dataset.index, 1);
             setWatchedCooldown(list);
             renderCooldownList();
